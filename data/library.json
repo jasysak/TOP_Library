@@ -1,0 +1,16 @@
+[
+  {
+     "title":"The Hobbit",
+     "author":"J.R.R. Tolkien",
+     "pages":295,
+     "haveRead":"No",
+     "readDate":""
+  },
+  {
+     "title":"Test BooK",
+     "author":"No One",
+     "pages":999,
+     "haveRead":"No",
+     "readDate":""
+  }
+]

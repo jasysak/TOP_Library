@@ -1,3 +1,34 @@
-h1 {
+h1, h3 {
   color: blue;
+  padding: 5px;
+  margin-left: 10px;
+}
+
+h3 {
+  color: black;
+  margin-top: 10px;
+}
+
+.header {
+  display: flex;
+  flex-grow: 1;
+  width:100%;
+  border: 1px solid black; 
+}
+
+.head-left, .head-right {
+  display: flex;
+  width: 50%;
+  justify-content: center;
+  align-items: center;
+  background-color: antiquewhite;
+}
+
+.head-button {
+  margin: 0px 10px;
+ }
+
+input {
+  margin: 5px;
+
 }
