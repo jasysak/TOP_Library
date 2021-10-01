@@ -13,29 +13,21 @@
     v0.01 - Create initial book object per above object 
 */
 // TEMP - clear local and session Storage for testing only
-
 localStorage.clear();
 sessionStorage.clear();
 
 // initilize library with some test books
 let libInit;
-libInit = ` [{"bookID":100,"title":"The Hobbit","author":"J.R.R. Tolkien","pages":295,"haveRead":"No","dateRead":"000000"},
-            {"bookID":101,"title":"Test BooK","author":"No One","pages":999,"haveRead":"No","dateRead":"000000"}
+libInit = ` [{"Book ID":100,"Title":"The Hobbit","Author":"J.R.R. Tolkien","Pages":310,"Have Read":"No","Date Read":""},
+            {"Book ID":101,"Title":"A Game of Thrones","Author":"George R.R. Martin","Pages":694,"Have Read":"Yes","Date Read":"2016/10/01"}
             ]`
 
 // let userFile = "./data/library.json"; // not used yet
 
-// parse libInit JSON to array
-
 let bookLibrary = [];
-
 if (libInit) {
   bookLibrary = JSON.parse(libInit);
 }
-
-
-
-
 
 // init localStorage 'userLibrary' if it does not exist
 if (localStorage.getItem('userLibrary') === null) {
@@ -46,12 +38,12 @@ let totalBooks = bookLibrary.length;
 
 // Book object
 function book(bookID, title, author, pages, haveRead, dateRead) {
-  this.bookID = bookID;
-  this.title = title;
-  this.author = author;
-  this.pages = pages;
-  this.haveRead = haveRead;
-  this.dateRead = dateRead;
+  this['Book ID'] = bookID;
+  this['Title'] = title;
+  this['Author'] = author;
+  this['Pages'] = pages;
+  this['Have Read'] = haveRead;
+  this['Date Read'] = dateRead;
  
   //this.info = () => {
   //  return (title + ' by ' + author + ', ' + pages + ' pages' + ', Read: ' + haveRead);
@@ -62,6 +54,15 @@ book.prototype.info = function() {
     return (this.title + ' by ' + this.author + ', ' + this.pages + ' pages' + ', Read: ' + this.haveRead);
 }
 
+// some event listeners NOT USED
+//document.getElementById('add-book').addEventListener('click', addBook());
+
+// for Bootstrap popover functionality
+var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+  return new bootstrap.Popover(popoverTriggerEl)
+})
+
 // for table creation
 let tableTest;
 let tableDiv;
@@ -71,12 +72,9 @@ let _th = document.createElement('th');
 let _td = document.createElement('td');
 const btn = document.createElement('button');
 
-// some event listeners NOT USED
-//document.getElementById('add-book').addEventListener('click', addBook());
-
 // setup table for formatting
 _table.setAttribute('id', 'libraryTable');
-_table.classList.add('table', 'table-striped');
+
 btn.classList.add('btn', 'btn-primary');  
 
 // credit to stack overflow for table creation code (with slight edits by JAS/me):
@@ -156,9 +154,6 @@ function init() {
 
  // END code from Stack overflow
 
-
-
-
 function addBook() {
   // function to add a book to the library 
   // popup a modal form entry box
@@ -166,22 +161,23 @@ function addBook() {
   // then appends to bookLibrary array
   totalBooks = bookLibrary.length;
   let _addBook = new book;
-  _addBook['bookID'] = totalBooks + 100;
-  _addBook['title'] = document.getElementById('bTitle').value;
-  _addBook['author'] = document.getElementById('bAuthor').value;
-  _addBook['pages'] = document.getElementById('bPages').value;
-  _addBook['haveRead'] = document.getElementById('bRead').value;
-  _addBook['dateRead'] = document.getElementById('bDateRead').value;
-  console.log("_addBook = " + _addBook.pages);
+  _addBook['Book ID'] = totalBooks + 100;
+  _addBook['Title'] = document.getElementById('bTitle').value;
+  _addBook['Author'] = document.getElementById('bAuthor').value;
+  _addBook['Pages'] = document.getElementById('bPages').value;
+  _addBook['Have Read'] = document.querySelector('.form-check-input').checked;
+  _addBook['Date Read'] = document.getElementById('bDateRead').value;
+  // TEST OK console.log("_addBook = " + _addBook.pages);
   bookLibrary.push(_addBook);
   listBooks();
   
-
 }
+
 function removeBook() {
   // as above, but remove instead of add.
   // remove selected book
   // compact bookLibrary array
+  // TO DO
   listBooks();
 
 }
@@ -189,6 +185,7 @@ function removeBook() {
 function findBooks() {
   // a function to accept a search term and the type of search, then return an array of matches
   // TO DO
+
 }
 
 function listBooks() {
@@ -202,23 +199,17 @@ function listBooks() {
   }
   //console.log(document.getElementById('libraryTable'))
   tableTest = buildHtmlTable(bookLibrary);
+  tableTest.classList.add('table');
+  tableTest.classList.add('table-striped');
+  tableTest.classList.add('sortable');
   tableDiv = document.getElementById('table-container');
   tableDiv.appendChild(tableTest);
-
 } 
 
 function displayDash() {
   //to display and update a user dashboard/landing page
 
-
 }
-
-// TEST OK
-//for (i = 0; i < bookLibrary.length; i++) {
-//  console.log(bookLibrary[i]);
-//  console.log(typeof bookLibrary[i]);
-// console.log(bookLibrary[i].info()); NOT WORKING
-//}
 
 if (document.getElementById('libraryTable')) {
   listBooks();
