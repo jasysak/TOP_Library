@@ -178,6 +178,7 @@ function removeBook() {
   // remove selected book
   // compact bookLibrary array
   // TO DO
+  alert('Not Yet Implemented.');
   listBooks();
 
 }
@@ -185,7 +186,8 @@ function removeBook() {
 function findBooks() {
   // a function to accept a search term and the type of search, then return an array of matches
   // TO DO
-
+  alert('Not Yet Implemented.');
+  
 }
 
 function listBooks() {
