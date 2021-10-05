@@ -18,8 +18,8 @@ sessionStorage.clear();
 
 // initilize library with some test books
 let libInit;
-libInit = ` [{"Book ID":100,"Title":"The Hobbit","Author":"J.R.R. Tolkien","Pages":310,"Have Read":"No","Date Read":""},
-            {"Book ID":101,"Title":"A Game of Thrones","Author":"George R.R. Martin","Pages":694,"Have Read":"Yes","Date Read":"2016/10/01"}
+libInit = ` [{"Book ID":100,"Title":"The Hobbit","Author":"J.R.R. Tolkien","Pages":310,"Have Read":false,"Date Read":"000000"},
+            {"Book ID":101,"Title":"A Game of Thrones","Author":"George R.R. Martin","Pages":694,"Have Read":true,"Date Read":"2016/10/01"}
             ]`
 
 // let userFile = "./data/library.json"; // not used yet
@@ -61,7 +61,7 @@ book.prototype.info = function() {
 var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
 var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
   return new bootstrap.Popover(popoverTriggerEl)
-})
+});
 
 // for table creation
 let tableTest;
@@ -70,55 +70,62 @@ let _table = document.createElement('table');
 let _tr = document.createElement('tr');
 let _th = document.createElement('th');
 let _td = document.createElement('td');
-const btn = document.createElement('button');
+const checkbox = document.createElement('input');
+checkbox.type = 'checkbox';
 
 // setup table for formatting
 _table.setAttribute('id', 'libraryTable');
 
-btn.classList.add('btn', 'btn-primary');  
+//btn.classList.add('btn', 'btn-primary');  
 
 // credit to stack overflow for table creation code (with slight edits by JAS/me):
 // https://stackoverflow.com/questions/5180382/convert-json-data-to-a-html-table
 // Builds the HTML Table out of bookLibrary array / json data.
- function buildHtmlTable(arr) {
-     var table = _table.cloneNode(false),
-         columns = addAllColumnHeaders(arr, table);
-     for (var i=0, maxi=arr.length; i < maxi; i++) {
-         var tr = _tr.cloneNode(false);
-         for (var j=0, maxj=columns.length; j < maxj ; j++) {
-             var td = _td.cloneNode(false);
-                 cellValue = arr[i][columns[j]];
-             td.appendChild(document.createTextNode(arr[i][columns[j]]));
-             //if (j === (maxj-1)) { 
-             // td.appendChild(document.createElement("button")); // not working
-             // }
-             tr.appendChild(td);
-             
-         }
-         // tr.appendChild(btn);
-         table.appendChild(tr);
+function buildHtmlTable(arr) {
+  var table = _table.cloneNode(false);
+  console.log(table);
+  var columns = addAllColumnHeaders(arr, table);
+  console.log(typeof columns);
+  for (var i=0, maxi=arr.length; i < maxi; i++) {
+    var tr = _tr.cloneNode(false);
+    for (var j=0, maxj=columns.length; j <= maxj ; j++) {
+      var td = _td.cloneNode(false);
+      console.log(i + ' ' + j + ' ' + arr[i][columns[j]]);
+      if (j < maxj) td.appendChild(document.createTextNode(arr[i][columns[j]]));
+      else td.appendChild(checkbox); // add a checkbox for selecting
+
+      
+
+      tr.appendChild(td);
+      
+    }
+    
+    table.appendChild(tr);
          
-     }
-     return table;
- }
- function addAllColumnHeaders(arr, table)
- {
-     var columnSet = [],
-         tr = _tr.cloneNode(false);
-     for (var i=0, l=arr.length; i < l; i++) {
-         for (var key in arr[i]) {
-             if (arr[i].hasOwnProperty(key) && columnSet.indexOf(key)===-1) {
-                 columnSet.push(key);
-                 var th = _th.cloneNode(false);
-                 th.appendChild(document.createTextNode(key));
-                 tr.appendChild(th);
-             }
-         }
-     }
-     table.appendChild(tr);
-     // TEST OK console.log(columnSet);
-     return columnSet;
- }
+  }
+  return table;
+}
+
+function addAllColumnHeaders(arr, table) {
+  var columnSet = [];
+  var tr = _tr.cloneNode(false);
+  for (var i=0, l=arr.length; i < l; i++) {
+    for (var key in arr[i]) {
+      if (arr[i].hasOwnProperty(key) && columnSet.indexOf(key)===-1) {
+        columnSet.push(key);
+        var th = _th.cloneNode(false);
+        th.appendChild(document.createTextNode(key));
+        tr.appendChild(th);
+      }
+    }
+  }
+  let selectCheck = document.createElement('th');
+  selectCheck.innerText = 'Select';
+  tr.appendChild(selectCheck); // add extra column for chose button
+  table.appendChild(tr);
+  console.log(table);
+  return columnSet;
+}
 
  // below curtesy of https://codepen.io/KryptoniteDove/post/load-json-file-locally-using-pure-javascript
  // and https://stackoverflow.com/questions/48073151/read-local-json-file-into-variable
@@ -203,7 +210,8 @@ function listBooks() {
   tableTest = buildHtmlTable(bookLibrary);
   tableTest.classList.add('table');
   tableTest.classList.add('table-striped');
-  tableTest.classList.add('sortable');
+  //tableTest.classList.add('sortable');
+  tableTest.classList.add('js-sort-table');
   tableDiv = document.getElementById('table-container');
   tableDiv.appendChild(tableTest);
 } 
