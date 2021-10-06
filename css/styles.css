@@ -28,7 +28,7 @@ h4 {
 }
 
 .head-button {
-  margin: 0px 10px;
+  margin: 0px 0px;
  }
 
 input {
@@ -36,9 +36,27 @@ input {
 
 }
 
+.library-table {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+.card-div {
+  border: 1px solid black;
+  margin: 5px;
+  padding: 5px;
+  border-radius: 10px;
+  width: 320px;
+  height: 320px;
+}
+
 table.sortable thead {
   background-color:#eee;
   color:#666666;
   font-weight: bold;
   cursor: default;
+}
+
+button, img {
+  margin: 4px;
 }
