@@ -60,3 +60,7 @@ table.sortable thead {
 button, img {
   margin: 4px;
 }
+
+p {
+  font-size: 25px;
+}

@@ -13,8 +13,8 @@
     v0.01 - Create initial book object per above object 
 */
 // TEMP - clear local and session Storage for testing only
-localStorage.clear();
-sessionStorage.clear();
+//localStorage.clear();
+//sessionStorage.clear();
 
 // initilize library with some test books
 let libInit;
@@ -24,16 +24,17 @@ libInit = ` [{"Book ID":100,"Title":"The Hobbit","Author":"J.R.R. Tolkien","Page
 
 // let userFile = "./data/library.json"; // not used yet
 
-let bookLibrary = [];
-if (libInit) {
-  bookLibrary = JSON.parse(libInit);
-}
+
+// if (libInit) {
+//  bookLibrary = JSON.parse(libInit);
+//}
 
 // init localStorage 'userLibrary' if it does not exist
 if (localStorage.getItem('userLibrary') === null) {
-  localStorage.setItem('userLibrary', JSON.stringify(bookLibrary));
+  localStorage.setItem('userLibrary', JSON.stringify(libInit));
 }
 
+let bookLibrary = JSON.parse(localStorage.getItem('userLibrary'));
 let totalBooks; 
 
 // Book object
@@ -48,11 +49,11 @@ function book(bookID, title, author, pages, haveRead, dateRead) {
   //this.info = () => {
   //  return (title + ' by ' + author + ', ' + pages + ' pages' + ', Read: ' + haveRead);
 }
-  
-  // Simple method as example - NOT USED
-book.prototype.info = function() {
-    return (this.title + ' by ' + this.author + ', ' + this.pages + ' pages' + ', Read: ' + this.haveRead);
-}
+
+// Simple method as example - NOT USED
+//book.prototype.info = function() {
+//    return (this.title + ' by ' + this.author + ', ' + this.pages + ' pages' + ', Read: ' + this.haveRead);
+//}
 
 // some event listeners NOT USED
 //document.getElementById('add-book').addEventListener('click', addBook());
@@ -119,7 +120,7 @@ function addAllColumnHeaders(arr, table) {
   selectCheck.innerText = 'Select';
   tr.appendChild(selectCheck); // add extra column for chose button
   table.appendChild(tr);
-  console.log(table);
+  // console.log(table);
   return columnSet;
 }
 
@@ -154,8 +155,7 @@ function init() {
   });
 }
 */
-
- // END code from Stack overflow
+// END code from Stack overflow
 
  function addBookDiv(i) {
   tableDiv = document.getElementById('libraryTable');
@@ -164,23 +164,23 @@ function init() {
   let btnDel = document.createElement('button');
   btnDel.innerText = 'Delete';
   btnDel.setAttribute('class', 'btn btn-outline-danger');
-  let dateRead; // local only
+  
   newDiv.setAttribute('id', bookLibrary[i]['Book ID']);
   newDiv.setAttribute('class', 'card-div');
+
   if (bookLibrary[i]['Have Read'] == 'true') {
     btnRead.innerText = 'Read';
-    dateRead = bookLibrary[i]['dateRead'];
+  
     btnRead.setAttribute('class', 'btn btn-outline-success');
     btnRead.setAttribute('data-text-original', 'Read');
     btnRead.setAttribute('data-text-swap', 'Not Read');
   }
   else {
     btnRead.innerText = 'Not Read';
-    dateRead = bookLibrary[i]['0000/00/00'];
     btnRead.setAttribute('class', 'btn btn-outline-secondary');
     btnRead.setAttribute('data-text-swap', 'Read');
   }
-  // add an event listener to toggle read status and read status button (i.e. toggle)
+  // add an event listener to toggle read status and button appearance (i.e. toggle)
   btnRead.addEventListener('click', function() {
     if (btnRead.getAttribute('data-text-swap') == btnRead.innerHTML) {
       btnRead.innerHTML = btnRead.getAttribute('data-text-original');
@@ -196,7 +196,8 @@ function init() {
       btnRead.classList.add('btn-outline-secondary');
     } 
     else {
-      bookLibrary[i]['Have Read'] == 'true';
+      bookLibrary[i]['Have Read'] == 'false';
+      bookLibrary[i]['Have Read'] = 'true';
       btnRead.classList.remove('btn-outline-secondary');
       btnRead.classList.add('btn-outline-success');
     }
@@ -233,11 +234,12 @@ function addBook() {
   _addBook['Title'] = document.getElementById('bTitle').value;
   _addBook['Author'] = document.getElementById('bAuthor').value;
   _addBook['Pages'] = document.getElementById('bPages').value;
-  _addBook['Have Read'] = document.querySelector('.form-check-input').checked;
+  _addBook['Have Read'] = (document.querySelector('.form-check-input').checked).toString();
+  console.log(_addBook['Have Read']);
   _addBook['Date Read'] = document.getElementById('bDateRead').value;
   _addBook['ISBN 13'] = document.getElementById('bISBN').value;
-  // TEST OK console.log("_addBook = " + _addBook.pages);
   bookLibrary.push(_addBook);
+  localStorage.setItem('userLibrary', JSON.stringify(bookLibrary));
   addBookDiv(totalBooks);
   totalBooks = bookLibrary.length;  // should increment by 1
   //listBooks();
@@ -249,6 +251,7 @@ function removeBook(removeID) {
   bookLibrary = bookLibrary.filter(function (e) {
     return e != null;
   });
+  localStorage.setItem('userLibrary', JSON.stringify(bookLibrary));
   listBooks();
 }
 
@@ -256,7 +259,7 @@ function findBooks() {
   // a function to accept a search term and the type of search, then return an array of matches
   // TO DO
   alert('Not Yet Implemented.');
-  listBooks();
+  // listBooks();
 }
 
 function listBooks() {
