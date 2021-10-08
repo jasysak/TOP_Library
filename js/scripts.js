@@ -50,7 +50,7 @@ function book(bookID, title, author, pages, haveRead, dateRead) {
   //  return (title + ' by ' + author + ', ' + pages + ' pages' + ', Read: ' + haveRead);
 }
 
-// Simple method as example - NOT USED
+// Simple method as example NOT USED
 //book.prototype.info = function() {
 //    return (this.title + ' by ' + this.author + ', ' + this.pages + ' pages' + ', Read: ' + this.haveRead);
 //}
@@ -94,10 +94,8 @@ function buildHtmlTable(arr) {
       console.log(i + ' ' + j + ' ' + arr[i][columns[j]]);
       if (j < maxj) td.appendChild(document.createTextNode(arr[i][columns[j]]));
       else td.appendChild(checkbox); // add a checkbox for selecting
-
       tr.appendChild(td);      
     }
-    
     table.appendChild(tr);
   }
   return table;
@@ -120,7 +118,6 @@ function addAllColumnHeaders(arr, table) {
   selectCheck.innerText = 'Select';
   tr.appendChild(selectCheck); // add extra column for chose button
   table.appendChild(tr);
-  // console.log(table);
   return columnSet;
 }
 
@@ -170,7 +167,6 @@ function init() {
 
   if (bookLibrary[i]['Have Read'] == 'true') {
     btnRead.innerText = 'Read';
-  
     btnRead.setAttribute('class', 'btn btn-outline-success');
     btnRead.setAttribute('data-text-original', 'Read');
     btnRead.setAttribute('data-text-swap', 'Not Read');
@@ -178,18 +174,18 @@ function init() {
   else {
     btnRead.innerText = 'Not Read';
     btnRead.setAttribute('class', 'btn btn-outline-secondary');
+    btnRead.setAttribute('data-text-original', 'Not Read');
     btnRead.setAttribute('data-text-swap', 'Read');
   }
   // add an event listener to toggle read status and button appearance (i.e. toggle)
   btnRead.addEventListener('click', function() {
     if (btnRead.getAttribute('data-text-swap') == btnRead.innerHTML) {
       btnRead.innerHTML = btnRead.getAttribute('data-text-original');
-
     } else {
       btnRead.setAttribute('data-text-original', btnRead.innerHTML);
       btnRead.innerHTML = btnRead.getAttribute('data-text-swap');
     }
-    // toggle Have Read in bookLibrary[] NOT WORKING
+    // toggle Have Read in bookLibrary[]
     if (bookLibrary[i]['Have Read'] == 'true') {
       bookLibrary[i]['Have Read'] = 'false';
       btnRead.classList.remove('btn-outline-success');
@@ -201,9 +197,9 @@ function init() {
       btnRead.classList.remove('btn-outline-secondary');
       btnRead.classList.add('btn-outline-success');
     }
-    console.log(bookLibrary[i]['Have Read'])
+    // TEST OK console.log(bookLibrary[i]['Have Read'])
   }, false);
-  // grab a cover graphic from https://openlibrary.org/dev/docs/api/covers
+  // grab a cover graphic from https://openlibrary.org/dev/docs/api/covers using ISBN 13 and S, M, L image size
   const coverURL = `http://covers.openlibrary.org/b/ISBN/${bookLibrary[i]['ISBN 13']}-S.jpg`
   newDiv.innerHTML = `<p> <img src=${coverURL} </p>` +
                     //'<p>Book ID: ' + bookLibrary[i]['Book ID'] + '</p>' +
@@ -212,14 +208,14 @@ function init() {
                     bookLibrary[i]['Pages'] + ' Pages</p>' +
                     '<p>ISBN 13: ' + bookLibrary[i]['ISBN 13'] + '</p>' +
                     '<p>Date Read: ' + bookLibrary[i]['Date Read'] + '</p>';
-  btnRead.setAttribute('data-bookID', bookLibrary[i]['Book ID']); // for later editing
-
-  btnDel.setAttribute('data-bookID', bookLibrary[i]['Book ID']);
+  // btnRead.setAttribute('data-bookID', bookLibrary[i]['Book ID']); // for later editing
+  // btnDel.setAttribute('data-bookID', bookLibrary[i]['Book ID']);
+  // add event listener for Delete
   btnDel.setAttribute('onclick', `removeBook(bookLibrary[${i}])`);
-  // add buttons for Read/Not Read status and Delete
+  // append the buttons for Read/Not Read status and Delete
   newDiv.appendChild(btnRead);
   newDiv.appendChild(btnDel);
-  // add the new book div
+  // append the new book div for display
   tableDiv.appendChild(newDiv);
 }
 
@@ -229,20 +225,20 @@ function addBook() {
   // accepts title, author, pages, haveRead, readDate
   // then appends to bookLibrary array
   totalBooks = bookLibrary.length;
-  let _addBook = new book;
-  _addBook['Book ID'] = totalBooks + 100;
-  _addBook['Title'] = document.getElementById('bTitle').value;
-  _addBook['Author'] = document.getElementById('bAuthor').value;
-  _addBook['Pages'] = document.getElementById('bPages').value;
-  _addBook['Have Read'] = (document.querySelector('.form-check-input').checked).toString();
-  console.log(_addBook['Have Read']);
-  _addBook['Date Read'] = document.getElementById('bDateRead').value;
-  _addBook['ISBN 13'] = document.getElementById('bISBN').value;
-  bookLibrary.push(_addBook);
+  let addBook = new book;
+  addBook['Book ID'] = totalBooks + 100;
+  addBook['Title'] = document.getElementById('bTitle').value;
+  addBook['Author'] = document.getElementById('bAuthor').value;
+  addBook['Pages'] = document.getElementById('bPages').value;
+  addBook['Have Read'] = (document.querySelector('.form-check-input').checked).toString();
+  // TEST OK console.log(_addBook['Have Read']);
+  addBook['Date Read'] = document.getElementById('bDateRead').value;
+  addBook['ISBN 13'] = document.getElementById('bISBN').value;
+  bookLibrary.push(addBook);
   localStorage.setItem('userLibrary', JSON.stringify(bookLibrary));
   addBookDiv(totalBooks);
   totalBooks = bookLibrary.length;  // should increment by 1
-  //listBooks();
+  // TEST OK listBooks();
 }
 
 function removeBook(removeID) {
