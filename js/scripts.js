@@ -13,29 +13,30 @@
     v0.01 - Create initial book object per above object 
 */
 // TEMP - clear local and session Storage for testing only
-//localStorage.clear();
-//sessionStorage.clear();
+window.localStorage.clear();
+window.localStorage.removeItem('userLibrary');
+sessionStorage.clear();
 
 // initilize library with some test books
 let libInit;
-libInit = ` [{"Book ID":100,"Title":"The Hobbit","Author":"J.R.R. Tolkien","Pages":310,"Have Read":"false","Date Read":"0000/00/00", "ISBN 13": 9780044403371},
+libInit = `[{"Book ID":100,"Title":"The Hobbit","Author":"J.R.R. Tolkien","Pages":310,"Have Read":"false","Date Read":"0000/00/00", "ISBN 13": 9780044403371},
             {"Book ID":101,"Title":"A Game of Thrones","Author":"George R.R. Martin","Pages":694,"Have Read":"true","Date Read":"2016/10/01", "ISBN 13": 9780553573404}
             ]`
 
 // let userFile = "./data/library.json"; // not used yet
 
-
-// if (libInit) {
-//  bookLibrary = JSON.parse(libInit);
-//}
+let bookLibrary = JSON.parse(localStorage.getItem('userLibrary'));
+let totalBooks; 
+if (libInit) {
+  bookLibrary = JSON.parse(libInit);
+}
 
 // init localStorage 'userLibrary' if it does not exist
 if (localStorage.getItem('userLibrary') === null) {
-  localStorage.setItem('userLibrary', JSON.stringify(libInit));
+  localStorage.setItem('userLibrary', JSON.stringify(bookLibrary));
 }
 
-let bookLibrary = JSON.parse(localStorage.getItem('userLibrary'));
-let totalBooks; 
+
 
 // Book object
 function book(bookID, title, author, pages, haveRead, dateRead) {
@@ -242,7 +243,7 @@ function addBook() {
 }
 
 function removeBook(removeID) {
-  // TEST OK console.log(removeID);
+  console.log(removeID);
   bookLibrary.splice(bookLibrary.indexOf(removeID), 1);
   bookLibrary = bookLibrary.filter(function (e) {
     return e != null;
