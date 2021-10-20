@@ -12,12 +12,12 @@
 
     v0.01 - Create initial book object per above object 
 */
-// TEMP - clear local and session Storage for testing only
+// TEMP - clear local and session Storage 
 window.localStorage.clear();
 window.localStorage.removeItem('userLibrary');
 sessionStorage.clear();
 
-// initilize library with some test books
+// initilize library with some test/sample books
 let libInit;
 libInit = `[{"Book ID":100,"Title":"The Hobbit","Author":"J.R.R. Tolkien","Pages":310,"Have Read":"false","Date Read":"0000/00/00", "ISBN 13": 9780044403371},
             {"Book ID":101,"Title":"A Game of Thrones","Author":"George R.R. Martin","Pages":694,"Have Read":"true","Date Read":"2016/10/01", "ISBN 13": 9780553573404}
@@ -39,16 +39,18 @@ if (localStorage.getItem('userLibrary') === null) {
 
 
 // Book object
-function book(bookID, title, author, pages, haveRead, dateRead) {
-  this['Book ID'] = bookID;
-  this['Title'] = title;
-  this['Author'] = author;
-  this['Pages'] = pages;
-  this['Have Read'] = haveRead;
-  this['Date Read'] = dateRead;
- 
-  //this.info = () => {
-  //  return (title + ' by ' + author + ', ' + pages + ' pages' + ', Read: ' + haveRead);
+class book {
+  constructor(bookID, title, author, pages, haveRead, dateRead) {
+    this['Book ID'] = bookID;
+    this['Title'] = title;
+    this['Author'] = author;
+    this['Pages'] = pages;
+    this['Have Read'] = haveRead;
+    this['Date Read'] = dateRead;
+
+    //this.info = () => {
+    //  return (title + ' by ' + author + ', ' + pages + ' pages' + ', Read: ' + haveRead);
+  }
 }
 
 // Simple method as example NOT USED
