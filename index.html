@@ -12,49 +12,35 @@
   <title>Library</title>
 </head>
 <body>
-  <div class="">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light gx-4">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="#"><h1>[@User's] Library Application</h1></a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-
-            <li class="nav-item head-button">
-              <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#addBook-modal">Add Book</button>
-              <!-- <button id="add-book" class="btn btn-outline-success" onclick="addBook()"></button> -->
-            </li>
-            <!-- 
-              <li class="nav-item head-button">
-                <button type="button" class="btn btn-primary" type="submit" onclick="removeBook()">Remove Selected</button>
-              </li>
-            -->
-            <li class="nav-item head-button">
-              <!-- 
-                <button id="add-book" class="btn btn-primary" onclick="">About</button> 
-                <button type="button" class="btn btn-primary" data-bs-toggle="popover" title="About Library" data-bs-content="And here's some amazing content. It's very engaging. Right?
-                And this was added only to try / test popover functionality.">About</button>
-              -->
-              <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#about-modal">About</button>
-            </li>
-          </ul>
-          <form class="d-flex">
-            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success" onclick="findBooks()">Search</button>
-          </form>
-        </div>
-      </div>
-    </nav>
+ <!-- NAVBAR --> 
+  <nav class="navbar navbar-expand-lg navbar-light bg-light gx-4">
+    <div class="container">
+      <a class="navbar-title navbar-lt" href="#"><h1>Book Library</h1></a>
  
+      <div class="navbar-rt">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li>
+            <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#addBook-modal">Add Book</button>
+          </li>
+          <li>
+            <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#about-modal">About</button>
+          </li>
+        </ul>
+        <form class="d-flex">
+          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+          <button class="btn btn-outline-success" onclick="searchBooks()">Search</button>
+        </form>
+      </div>
+    </div>
+  </nav>
+  <!-- END NAVBAR -->
 
-  </div>
-  <div class="container-main">
+  <!-- CONTENT CONTAINER -->
+  <div class="container">
     
-
+    <!-- MODAL FORMS -->
     <div id="form-container" class="container-form">
-
+      <!-- ADD OR EDIT BOOK MODAL-->
       <div id="addBook-modal" class="modal" tabindex="-1">
         <div class="modal-dialog">
           <div class="modal-content">
@@ -64,13 +50,13 @@
             </div>
             <div class="modal-body">
             
-              <form class="mb-3">
+              <form class="mb-1">
                 <label for="bTitle" class="form-label" >Title:</label>
-                <input type="text" id="bTitle" class="form-control">
+                <input type="text" id="bTitle" class="form-control" required="required">
                 <label class="form-label" >Author:</label>
-                <input type="text" id="bAuthor" class="form-control" >
+                <input type="text" id="bAuthor" class="form-control" required="required">
                 <label class="form-label" >Pages:</label>
-                <input type="number" id="bPages" value=0 class="form-control">
+                <input type="number" id="bPages" value=0 class="form-control" min=0 max=999999>
                 <label for="bISBN" class="form-label" >ISBN 13:</label>
                 <input type="text" id="bISBN" class="form-control">
                 <label class="form-label" >Date Read:</label>
@@ -81,15 +67,17 @@
                     Have Read
                   </label>
                 </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <submit id="add-book" class="btn btn-secondary" onclick="addBook()" data-bs-dismiss="modal">Add Book</submit>
+                </div>
               </form>
             </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button id="add-book" class="btn btn-secondary" onclick="addBook()" data-bs-dismiss="modal">Add Book</button>
-            </div>
+            
           </div>
         </div>
       </div>
+      <!-- ABOUT MODAL -->
       <div id="about-modal" class="modal" tabindex="-1">
         <div class="modal-dialog">
           <div class="modal-content">
@@ -98,12 +86,19 @@
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-              <h5>Simple library application created for The Odin Project</h5>
-              <p>A basic library "database" using HTML5 localstorage to save and store a list of books.</p>
-              <p>Revision history:</p>
-              <p>Version 0.01, Oct. 1, 2021 - Provides simple list and save functionality only.</p>
-
-              <h6>&copy 2021 JAS</h6>
+              <h5>Simple library application for The Odin Project</h5>
+              <p>Uses HTML5 localStorage to store data (no persistence)</p>
+              <ul>TODO:
+                <li>Add BaaS or full-fledged DB backend</li>
+                <li>Add existing book edit function(s)</li>
+                <li>Add search functionality</li>
+                <li>Deploy for family use with data persistence</li>
+                <li>Link to external 3rd party, Amazon, etc. for book items</li>
+              </ul>
+              <p>
+                <h6>&copy 2021 J.A. Sysak</h6>
+              </p>
+               
  
             </div>
             <div class="modal-footer">
@@ -114,7 +109,9 @@
         </div>
       </div>
     </div>
-    
+    <!-- END MODAL FORMS -->
+
+    <!-- LIBRARY BOOK CARDS - MAIN CONTENT SECTION -->
     <div id="table-container" class="container">
         <!-- <h4>Your Library Contains the following books:</h4> -->
         <div id="libraryTable" class="container library-table">
@@ -123,8 +120,9 @@
       
       </div>
     </div>
-   
+    <!-- END LIBRARY BOOK CARDS - MAIN CONTENT SECTION -->
   </div>
+  <!-- END CONTENT CONTAINER -->
   <!-- Bootstrap 5.0.2 and Popper JS includes -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
   <!-- Local Scripts -->

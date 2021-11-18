@@ -36,9 +36,14 @@ if (localStorage.getItem('userLibrary') === null) {
   localStorage.setItem('userLibrary', JSON.stringify(bookLibrary));
 }
 
+// class userLibrary {
+//  constructor (){
+//    this. = ;
+//  }
+//}
 
 
-// Book object
+// Book object - converted to class per TOP classes exercise
 class book {
   constructor(bookID, title, author, pages, haveRead, dateRead) {
     this['Book ID'] = bookID;
@@ -47,27 +52,12 @@ class book {
     this['Pages'] = pages;
     this['Have Read'] = haveRead;
     this['Date Read'] = dateRead;
-
-    //this.info = () => {
+    //this.info = () => { // NOT USED
     //  return (title + ' by ' + author + ', ' + pages + ' pages' + ', Read: ' + haveRead);
   }
 }
 
-// Simple method as example NOT USED
-//book.prototype.info = function() {
-//    return (this.title + ' by ' + this.author + ', ' + this.pages + ' pages' + ', Read: ' + this.haveRead);
-//}
-
-// some event listeners NOT USED
-//document.getElementById('add-book').addEventListener('click', addBook());
-
-// for Bootstrap popover functionality NOT USED
-//var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
-//var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
-//  return new bootstrap.Popover(popoverTriggerEl)
-//});
-
-// for table creation
+// for table creation 
 let tableTest;
 let tableDiv;
 let _table = document.createElement('table');
@@ -85,6 +75,7 @@ _table.setAttribute('id', 'libraryTable');
 // credit to stack overflow for table creation code (with slight edits by JAS/me):
 // https://stackoverflow.com/questions/5180382/convert-json-data-to-a-html-table
 // Builds the HTML Table out of bookLibrary array / json data.
+/* NOT USED
 function buildHtmlTable(arr) {
   var table = _table.cloneNode(false);
   console.log(table);
@@ -103,7 +94,9 @@ function buildHtmlTable(arr) {
   }
   return table;
 }
+*/
 
+/* NOT USED - For buildHtmlTable
 function addAllColumnHeaders(arr, table) {
   var columnSet = [];
   var tr = _tr.cloneNode(false);
@@ -123,100 +116,68 @@ function addAllColumnHeaders(arr, table) {
   table.appendChild(tr);
   return columnSet;
 }
-
- // below courtesy of https://codepen.io/KryptoniteDove/post/load-json-file-locally-using-pure-javascript
- // and https://stackoverflow.com/questions/48073151/read-local-json-file-into-variable
-
-/* function loadLibrary(callback) {
-
-  let request = new XMLHttpRequest();
-  request.overrideMimeType("application/json");
-  request.open("GET", userFile, true);  // TODO allow varyinh userFile
-  
-  request.onreadystatechange = function() {
-    if ( request.readyState === 4 && request.status === 200 ) {
-      
-      callback(JSON.parse(request.responseText));
-      // console.log(Object.values(result));
-      // console.log("Result = " + result);
-      // return result;
-      // return (Object.values(result));
-    }
-    
-  };
-  request.send(null);
-  
-}
-
-function init() {
-  loadLibrary(function(response) {
-    console.log(response);
-  
-  });
-}
 */
+
 // END code from Stack overflow
 
- function addBookDiv(i) {
+function addBookDiv(book) {
   tableDiv = document.getElementById('libraryTable');
   let newDiv = document.createElement('div'); 
-  let btnRead = document.createElement('button');
+  let btnEdit = document.createElement('button');
   let btnDel = document.createElement('button');
   btnDel.innerText = 'Delete';
   btnDel.setAttribute('class', 'btn btn-outline-danger');
-  
-  newDiv.setAttribute('id', bookLibrary[i]['Book ID']);
+  newDiv.setAttribute('id', bookLibrary[book]['Book ID']);
   newDiv.setAttribute('class', 'card-div');
 
-  if (bookLibrary[i]['Have Read'] == 'true') {
-    btnRead.innerText = 'Read';
-    btnRead.setAttribute('class', 'btn btn-outline-success');
-    btnRead.setAttribute('data-text-original', 'Read');
-    btnRead.setAttribute('data-text-swap', 'Not Read');
+  if (bookLibrary[book]['Have Read'] == 'true') {
+    btnEdit.innerText = 'Read';
+    btnEdit.setAttribute('class', 'btn btn-outline-success');
+    btnEdit.setAttribute('data-text-original', 'Read');
+    btnEdit.setAttribute('data-text-swap', 'Not Read');
   }
   else {
-    btnRead.innerText = 'Not Read';
-    btnRead.setAttribute('class', 'btn btn-outline-secondary');
-    btnRead.setAttribute('data-text-original', 'Not Read');
-    btnRead.setAttribute('data-text-swap', 'Read');
+    btnEdit.innerText = 'Not Read';
+    btnEdit.setAttribute('class', 'btn btn-outline-secondary');
+    btnEdit.setAttribute('data-text-original', 'Not Read');
+    btnEdit.setAttribute('data-text-swap', 'Read');
   }
   // add an event listener to toggle read status and button appearance (i.e. toggle)
-  btnRead.addEventListener('click', function() {
-    if (btnRead.getAttribute('data-text-swap') == btnRead.innerHTML) {
-      btnRead.innerHTML = btnRead.getAttribute('data-text-original');
+  btnEdit.addEventListener('click', function() {
+    if (btnEdit.getAttribute('data-text-swap') == btnEdit.innerHTML) {
+      btnEdit.innerHTML = btnEdit.getAttribute('data-text-original');
     } else {
-      btnRead.setAttribute('data-text-original', btnRead.innerHTML);
-      btnRead.innerHTML = btnRead.getAttribute('data-text-swap');
+      btnEdit.setAttribute('data-text-original', btnEdit.innerHTML);
+      btnEdit.innerHTML = btnEdit.getAttribute('data-text-swap');
     }
     // toggle Have Read in bookLibrary[]
-    if (bookLibrary[i]['Have Read'] == 'true') {
-      bookLibrary[i]['Have Read'] = 'false';
-      btnRead.classList.remove('btn-outline-success');
-      btnRead.classList.add('btn-outline-secondary');
+    if (bookLibrary[book]['Have Read'] == 'true') {
+      bookLibrary[book]['Have Read'] = 'false';
+      btnEdit.classList.remove('btn-outline-success');
+      btnEdit.classList.add('btn-outline-secondary');
     } 
     else {
-      bookLibrary[i]['Have Read'] == 'false';
-      bookLibrary[i]['Have Read'] = 'true';
-      btnRead.classList.remove('btn-outline-secondary');
-      btnRead.classList.add('btn-outline-success');
+      bookLibrary[book]['Have Read'] == 'false';
+      bookLibrary[book]['Have Read'] = 'true';
+      btnEdit.classList.remove('btn-outline-secondary');
+      btnEdit.classList.add('btn-outline-success');
     }
-    // TEST OK console.log(bookLibrary[i]['Have Read'])
   }, false);
   // grab a cover graphic from https://openlibrary.org/dev/docs/api/covers using ISBN 13 and S, M, L image size
-  const coverURL = `http://covers.openlibrary.org/b/ISBN/${bookLibrary[i]['ISBN 13']}-S.jpg`
+  const coverURL = `http://covers.openlibrary.org/b/ISBN/${bookLibrary[book]['ISBN 13']}-S.jpg`
   newDiv.innerHTML = `<p> <img src=${coverURL} </p>` +
                     //'<p>Book ID: ' + bookLibrary[i]['Book ID'] + '</p>' +
-                    '<p>' + bookLibrary[i]['Title'] + '<br> by ' +
-                    bookLibrary[i]['Author'] + '</p>' +
-                    bookLibrary[i]['Pages'] + ' Pages</p>' +
-                    '<p>ISBN 13: ' + bookLibrary[i]['ISBN 13'] + '</p>' +
-                    '<p>Date Read: ' + bookLibrary[i]['Date Read'] + '</p>';
+                    '<p>' + bookLibrary[book]['Title'] + '<br> by ' +
+                    bookLibrary[book]['Author'] + '</p>' +
+                    bookLibrary[book]['Pages'] + ' Pages</p>' +
+                    '<p>ISBN 13: ' + bookLibrary[book]['ISBN 13'] + '</p>' +
+                    '<p>Date Read: ' + bookLibrary[book]['Date Read'] + '</p>';
   // btnRead.setAttribute('data-bookID', bookLibrary[i]['Book ID']); // for later editing
   // btnDel.setAttribute('data-bookID', bookLibrary[i]['Book ID']);
   // add event listener for Delete
-  btnDel.setAttribute('onclick', `removeBook(bookLibrary[${i}])`);
+  btnDel.setAttribute('onclick', `removeBook(bookLibrary[${book}])`);
   // append the buttons for Read/Not Read status and Delete
-  newDiv.appendChild(btnRead);
+  newDiv.appendChild(btnEdit);
   newDiv.appendChild(btnDel);
   // append the new book div for display
   tableDiv.appendChild(newDiv);
@@ -254,19 +215,14 @@ function removeBook(removeID) {
   listBooks();
 }
 
-function findBooks() {
+function searchBooks() {
   // a function to accept a search term and the type of search, then return an array of matches
   // TO DO
   alert('Not Yet Implemented.');
   // listBooks();
 }
 
-function listBooks() {
-  // this function is written to dump the entire array as div's.
-  // for listing a sub-set (i.e. keyword search) it will need re-working
-  // the following if block checks if child div's exist and if they do
-  // (i.e. library has been displayed) it will clear them all and recreate
-  // this is not particularly efficient and only works in this case -> refactoring needed!!!
+function listBooks(arr) {
   if (document.getElementById('libraryTable').firstChild) {
     while (document.getElementById('libraryTable').firstChild) {
       document.getElementById('libraryTable').removeChild(document.getElementById('libraryTable').firstChild);
@@ -275,6 +231,7 @@ function listBooks() {
   for (let i = 0; i < bookLibrary.length; i++) {
     addBookDiv(i);
   }
+
   /* TABLE code below - replaced with card div view
   if (document.getElementById('libraryTable')) {
     document.getElementById('libraryTable').remove();
@@ -297,7 +254,7 @@ function displayDash() {
 if (document.getElementById('libraryTable')) {
   listBooks();
 }
-//console.log(bookLibrary);
+
 
 
 
