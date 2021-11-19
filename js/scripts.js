@@ -25,6 +25,8 @@ libInit = `[{"Book ID":100,"Title":"The Hobbit","Author":"J.R.R. Tolkien","Pages
 
 // let userFile = "./data/library.json"; // not used yet
 
+// TODO update user library data structure to resemble map (or object) -> (k, v)=(authorName, authorBookArray)
+
 let bookLibrary = JSON.parse(localStorage.getItem('userLibrary'));
 let totalBooks; 
 if (libInit) {
@@ -55,6 +57,12 @@ class book {
     //this.info = () => { // NOT USED
     //  return (title + ' by ' + author + ', ' + pages + ' pages' + ', Read: ' + haveRead);
   }
+}
+
+function toggleModal(elementID) {
+  let toggleElement = document.getElementById(elementID);
+  if (toggleElement.classList.contains('visible')) toggleElement.classList.remove('visible');
+  else toggleElement.classList.add('visible');
 }
 
 // for table creation 
@@ -183,26 +191,25 @@ function addBookDiv(book) {
   tableDiv.appendChild(newDiv);
 }
 
-function addBook() {
-  // function to add a book to the library 
-  // popup a modal form entry box
-  // accepts title, author, pages, haveRead, readDate
-  // then appends to bookLibrary array
-  totalBooks = bookLibrary.length;
+function addBook(toggleID) {
+  if ((!document.getElementById('bTitle').value) || (!document.getElementById('bAuthor').value)) {
+    alert('Book Title and Author are required!');
+    return;
+    // TODO clean up this validation, add working HTML5 form validation 
+  }
   let addBook = new book;
-  addBook['Book ID'] = totalBooks + 100;
+  totalBooks = bookLibrary.length;
+  addBook['Book ID'] = totalBooks + 100;  // this is not used for anything, but may be "later on"
   addBook['Title'] = document.getElementById('bTitle').value;
   addBook['Author'] = document.getElementById('bAuthor').value;
   addBook['Pages'] = document.getElementById('bPages').value;
   addBook['Have Read'] = (document.querySelector('.form-check-input').checked).toString();
-  // TEST OK console.log(_addBook['Have Read']);
   addBook['Date Read'] = document.getElementById('bDateRead').value;
   addBook['ISBN 13'] = document.getElementById('bISBN').value;
   bookLibrary.push(addBook);
   localStorage.setItem('userLibrary', JSON.stringify(bookLibrary));
   addBookDiv(totalBooks);
-  totalBooks = bookLibrary.length;  // should increment by 1
-  // TEST OK listBooks();
+  toggleModal(toggleID);
 }
 
 function removeBook(removeID) {
@@ -222,7 +229,8 @@ function searchBooks() {
   // listBooks();
 }
 
-function listBooks(arr) {
+function listBooks(authorName, authorBookArray) {  
+  // TODO update user library data structure to resemble map (or object) -> (k, v)=(authorName, authorBookArray)
   if (document.getElementById('libraryTable').firstChild) {
     while (document.getElementById('libraryTable').firstChild) {
       document.getElementById('libraryTable').removeChild(document.getElementById('libraryTable').firstChild);
@@ -245,11 +253,6 @@ function listBooks(arr) {
   tableDiv.appendChild(tableTest);
   */
 } 
-
-function displayDash() {
-  //to display and update a user dashboard/landing page
-
-}
 
 if (document.getElementById('libraryTable')) {
   listBooks();

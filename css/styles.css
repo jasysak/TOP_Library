@@ -10,13 +10,6 @@ a {
   margin-right: 40px;
 }
 
-.header {
-  display: flex;
-  flex-grow: 1;
-  width:100%;
-  border: 1px solid black; 
-}
-
 .navbar-lt, .navbar-rt {
   display: flex;
   flex-direction: row;
@@ -38,7 +31,10 @@ input {
 .container {
   margin: 0px;
   margin-left: 12px;
+  width: 100%;
+  margin-right: 12px;
 }
+
 .library-table {
   display: flex;
   flex-direction: row;
@@ -68,3 +64,10 @@ button, img {
   margin: 4px;
 }
 
+.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1.0);
+  display: block;
+  transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s; 
+}
