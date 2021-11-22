@@ -12,25 +12,54 @@
 
     v0.01 - Create initial book object per above object 
 */
+
+class library {
+  // authorLast: array[book1, book2, ..., bookN];
+  //
+  addBook(bookID, title, authorLast, authorFirst, pages, haveRead, dateRead) {
+  // first check if authorLast specified exists
+  // if yes, then push book to array
+  // if no, add authorLast: array[book] as new library object prop
+    this.authorLast.push(new book(bookID, title, authorLast, authorFirst, pages, haveRead, dateRead));
+  } 
+ 
+}
+
+// Book object - converted to class per TOP classes exercise
+class book {
+  constructor(bookID, title, authorLast, authorFirst, pages, haveRead, dateRead, isbn13) {
+    this.bookID = bookID;
+    this.title = title;
+    // this['authorLast'] = author;
+    this.authorLast = authorLast;
+    this.authorFirst = authorFirst;
+    this.pages = pages;
+    this.haveRead = haveRead;
+    this.dateRead = dateRead;
+    this.isbn13 = isbn13;
+    //this.info = () => { // NOT USED
+    //  return (title + ' by ' + author + ', ' + pages + ' pages' + ', Read: ' + haveRead);
+  }
+  
+}
 // TEMP - clear local and session Storage 
-window.localStorage.clear();
-window.localStorage.removeItem('userLibrary');
-sessionStorage.clear();
+// window.localStorage.clear();
+// window.localStorage.removeItem('userLibrary');
+// sessionStorage.clear();
 
 // initilize library with some test/sample books
 let libInit;
-libInit = `[{"Book ID":100,"Title":"The Hobbit","Author":"J.R.R. Tolkien","Pages":310,"Have Read":"false","Date Read":"0000/00/00", "ISBN 13": 9780044403371},
-            {"Book ID":101,"Title":"A Game of Thrones","Author":"George R.R. Martin","Pages":694,"Have Read":"true","Date Read":"2016/10/01", "ISBN 13": 9780553573404}
+libInit = `[{"bookID":100,"title":"The Hobbit","authorLast":"Tolkien","authorFirst":"J.R.R.","pages":310,"haveRead":"false","dateRead":"0000/00/00", "isbn13": 9780044403371},
+            {"bookID":101,"title":"A Game of Thrones","authorLast":"Martin","authorFirst":"George R.R.","pages":694,"haveRead":"true","dateRead":"2016/10/01", "isbn13": 9780553573404}
             ]`
-
-// let userFile = "./data/library.json"; // not used yet
 
 // TODO update user library data structure to resemble map (or object) -> (k, v)=(authorName, authorBookArray)
 
-let bookLibrary = JSON.parse(localStorage.getItem('userLibrary'));
+let bookLibrary; // = JSON.parse(localStorage.getItem('userLibrary'));
 let totalBooks; 
 if (libInit) {
   bookLibrary = JSON.parse(libInit);
+  library = JSON.parse(libInit);
 }
 
 // init localStorage 'userLibrary' if it does not exist
@@ -38,31 +67,26 @@ if (localStorage.getItem('userLibrary') === null) {
   localStorage.setItem('userLibrary', JSON.stringify(bookLibrary));
 }
 
-// class userLibrary {
-//  constructor (){
-//    this. = ;
-//  }
-//}
+console.log(typeof bookLibrary);
 
 
-// Book object - converted to class per TOP classes exercise
-class book {
-  constructor(bookID, title, author, pages, haveRead, dateRead) {
-    this['Book ID'] = bookID;
-    this['Title'] = title;
-    this['Author'] = author;
-    this['Pages'] = pages;
-    this['Have Read'] = haveRead;
-    this['Date Read'] = dateRead;
-    //this.info = () => { // NOT USED
-    //  return (title + ' by ' + author + ', ' + pages + ' pages' + ', Read: ' + haveRead);
-  }
-}
 
 function toggleModal(elementID) {
   let toggleElement = document.getElementById(elementID);
   if (toggleElement.classList.contains('visible')) toggleElement.classList.remove('visible');
   else toggleElement.classList.add('visible');
+}
+
+function setEventListeners() {
+  let tempElement;
+  // set a few event listeners. This allows for HTML5 form validation over setting
+  // an "onclick=function(...)" in the HTML form directly
+  tempElement = document.getElementById('add-book-btn');
+  tempElement.addEventListener('click', (e) => {
+    e.preventDefault(); 
+    addBook('add-book-modal');
+   }); 
+  
 }
 
 // for table creation 
@@ -135,10 +159,10 @@ function addBookDiv(book) {
   let btnDel = document.createElement('button');
   btnDel.innerText = 'Delete';
   btnDel.setAttribute('class', 'btn btn-outline-danger');
-  newDiv.setAttribute('id', bookLibrary[book]['Book ID']);
+  newDiv.setAttribute('id', bookLibrary[book]['bookID']);
   newDiv.setAttribute('class', 'card-div');
 
-  if (bookLibrary[book]['Have Read'] == 'true') {
+  if (bookLibrary[book]['haveRead'] == 'true') {
     btnEdit.innerText = 'Read';
     btnEdit.setAttribute('class', 'btn btn-outline-success');
     btnEdit.setAttribute('data-text-original', 'Read');
@@ -172,14 +196,14 @@ function addBookDiv(book) {
     }
   }, false);
   // grab a cover graphic from https://openlibrary.org/dev/docs/api/covers using ISBN 13 and S, M, L image size
-  const coverURL = `http://covers.openlibrary.org/b/ISBN/${bookLibrary[book]['ISBN 13']}-S.jpg`
+  const coverURL = `http://covers.openlibrary.org/b/ISBN/${bookLibrary[book]['isbn13']}-S.jpg`
   newDiv.innerHTML = `<p> <img src=${coverURL} </p>` +
                     //'<p>Book ID: ' + bookLibrary[i]['Book ID'] + '</p>' +
-                    '<p>' + bookLibrary[book]['Title'] + '<br> by ' +
-                    bookLibrary[book]['Author'] + '</p>' +
-                    bookLibrary[book]['Pages'] + ' Pages</p>' +
-                    '<p>ISBN 13: ' + bookLibrary[book]['ISBN 13'] + '</p>' +
-                    '<p>Date Read: ' + bookLibrary[book]['Date Read'] + '</p>';
+                    '<p>' + bookLibrary[book]['title'] + '<br> by ' +
+                    bookLibrary[book]['authorLast'] + ', ' + bookLibrary[book]['authorFirst'] + '</p>' +
+                    bookLibrary[book]['pages'] + ' Pages</p>' +
+                    '<p>ISBN 13: ' + bookLibrary[book]['isbn13'] + '</p>' +
+                    '<p>Date Read: ' + bookLibrary[book]['dateRead'] + '</p>';
   // btnRead.setAttribute('data-bookID', bookLibrary[i]['Book ID']); // for later editing
   // btnDel.setAttribute('data-bookID', bookLibrary[i]['Book ID']);
   // add event listener for Delete
@@ -191,25 +215,27 @@ function addBookDiv(book) {
   tableDiv.appendChild(newDiv);
 }
 
-function addBook(toggleID) {
-  if ((!document.getElementById('bTitle').value) || (!document.getElementById('bAuthor').value)) {
+function addBook(toggleElementID) {
+  if ((!document.getElementById('bTitle').value) || (!document.getElementById('bAuthorLast').value)) {
     alert('Book Title and Author are required!');
     return;
-    // TODO clean up this validation, add working HTML5 form validation 
+  // TODO clean up this validation, add working HTML5 form validation 
   }
-  let addBook = new book;
+  let bookToAdd = new book;
   totalBooks = bookLibrary.length;
-  addBook['Book ID'] = totalBooks + 100;  // this is not used for anything, but may be "later on"
-  addBook['Title'] = document.getElementById('bTitle').value;
-  addBook['Author'] = document.getElementById('bAuthor').value;
-  addBook['Pages'] = document.getElementById('bPages').value;
-  addBook['Have Read'] = (document.querySelector('.form-check-input').checked).toString();
-  addBook['Date Read'] = document.getElementById('bDateRead').value;
-  addBook['ISBN 13'] = document.getElementById('bISBN').value;
-  bookLibrary.push(addBook);
+  bookToAdd['bookID'] = totalBooks + 100;  // this is not used for anything, but may be "later on"
+  bookToAdd['title'] = document.getElementById('bTitle').value;
+  bookToAdd['authorLast'] = document.getElementById('bAuthorLast').value;
+  bookToAdd['authorFirst'] = document.getElementById('bAuthorFirst').value;
+  bookToAdd['pages'] = document.getElementById('bPages').value;
+  bookToAdd['haveRead'] = (document.querySelector('.form-check-input').checked).toString();
+  bookToAdd['dateRead'] = document.getElementById('bDateRead').value;
+  bookToAdd['isbn13'] = document.getElementById('bISBN').value;
+  console.log(bookToAdd);
+  bookLibrary.push(bookToAdd);
   localStorage.setItem('userLibrary', JSON.stringify(bookLibrary));
   addBookDiv(totalBooks);
-  toggleModal(toggleID);
+  toggleModal(toggleElementID);
 }
 
 function removeBook(removeID) {
@@ -255,6 +281,7 @@ function listBooks(authorName, authorBookArray) {
 } 
 
 if (document.getElementById('libraryTable')) {
+  setEventListeners();
   listBooks();
 }
 

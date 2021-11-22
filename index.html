@@ -41,7 +41,7 @@
     <!-- MODAL FORMS -->
     <div id="form-container" class="">
       <!-- ADD OR EDIT BOOK MODAL-->
-      <div id="add-book-modal" class="modal" tabindex="-1">
+      <div id="add-book-modal" class="modal" >
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
@@ -50,11 +50,13 @@
             </div>
             <div class="modal-body">
             
-              <form id="edit-book">
-                <label for="bTitle" class="form-label" >Title</label>
-                <input id="bTitle" class="form-control" required="Book Title is required">
-                <label class="form-label" >Author</label>
-                <input type="text" id="bAuthor" class="form-control" required="Author is required">
+              <form id="edit-book form-floating">
+                <label class="form-label" >Book Title</label>
+                <input type="text" id="bTitle" class="form-control" required>
+                <label class="form-label" >Author Last Name</label>
+                <input type="text" id="bAuthorLast" class="form-control" required>
+                <label class="form-label" >Author First Name</label>
+                <input type="text" id="bAuthorFirst" class="form-control">
                 <label class="form-label" >Pages</label>
                 <input type="number" id="bPages" value=1 class="form-control" min=1 max=999999>
                 <label for="bISBN" class="form-label" >ISBN 13</label>
@@ -69,7 +71,7 @@
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" onclick="toggleModal('add-book-modal')">Close</button>
-                  <submit id="add-book" class="btn btn-secondary" onclick="addBook('add-book-modal')">Add Book</submit>
+                  <button id="add-book-btn" class="btn btn-success" >Add Book</button>
                 </div>
               </form>
             </div>
