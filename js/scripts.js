@@ -13,35 +13,41 @@
     v0.01 - Create initial book object per above object 
 */
 
-class library {
-  // authorLast: array[book1, book2, ..., bookN];
-  //
-  addBook(bookID, title, authorLast, authorFirst, pages, haveRead, dateRead) {
-  // first check if authorLast specified exists
-  // if yes, then push book to array
-  // if no, add authorLast: array[book] as new library object prop
-    this.authorLast.push(new book(bookID, title, authorLast, authorFirst, pages, haveRead, dateRead));
-  } 
- 
-}
-
 // Book object - converted to class per TOP classes exercise
 class book {
   constructor(bookID, title, authorLast, authorFirst, pages, haveRead, dateRead, isbn13) {
     this.bookID = bookID;
     this.title = title;
-    // this['authorLast'] = author;
     this.authorLast = authorLast;
     this.authorFirst = authorFirst;
     this.pages = pages;
     this.haveRead = haveRead;
     this.dateRead = dateRead;
     this.isbn13 = isbn13;
-    //this.info = () => { // NOT USED
-    //  return (title + ' by ' + author + ', ' + pages + ' pages' + ', Read: ' + haveRead);
   }
-  
 }
+
+/*
+class library {
+  [authorLast] 
+  constructor () {
+   // 
+  }
+  //constructor (authorLast, bookArray) {
+  //  [authorLast] = authorLast;
+  //  bookArray = bookArray;  new Array() ???
+  //}
+  //
+  addBookToLibrary(bookID, title, authorLast, authorFirst, pages, haveRead, dateRead, isbn13) {
+  // first check if authorLast specified exists
+  // if yes, then push book to array
+  // if no, add authorLast: array[book] as new library object prop
+    this.authorLast = authorLast;
+    this.authorLast.push(new book(bookID, title, authorLast, authorFirst, pages, haveRead, dateRead, isbn13));
+  } 
+}
+*/
+
 // TEMP - clear local and session Storage 
 // window.localStorage.clear();
 // window.localStorage.removeItem('userLibrary');
@@ -49,9 +55,13 @@ class book {
 
 // initilize library with some test/sample books
 let libInit;
-libInit = `[{"bookID":100,"title":"The Hobbit","authorLast":"Tolkien","authorFirst":"J.R.R.","pages":310,"haveRead":"false","dateRead":"0000/00/00", "isbn13": 9780044403371},
-            {"bookID":101,"title":"A Game of Thrones","authorLast":"Martin","authorFirst":"George R.R.","pages":694,"haveRead":"true","dateRead":"2016/10/01", "isbn13": 9780553573404}
-            ]`
+libInit = `[{"bookID":100,"title":"The Hobbit","authorLast":"Tolkien","authorFirst":"J.R.R.","pages":310,"haveRead":"false","dateRead":"0000/00/00", "isbn13": 9780044403371, "notes":"Classic fantasy, must read. Kids OK."},
+            {"bookID":101,"title":"A Game of Thrones","authorLast":"Martin","authorFirst":"George R.R.","pages":694,"haveRead":"true","dateRead":"2016/10/01", "isbn13": 9780553573404, "notes":"Now classic fantasy with more adult themes"},
+            {"bookID":102,"title":"On Basilisk Station","authorLast":"Weber","authorFirst":"David","pages":338,"haveRead":"true","dateRead":"2017/10/01", "isbn13": 9780671577933, "notes":"Action packed sci-fi, first in the Honorverse series."},
+            {"bookID":103,"title":"The Last Wish","authorLast":"Sapkowski","authorFirst":"Andrzej","pages":288,"haveRead":"false","dateRead":"0000/00/00", "isbn13": 9780316438964, "notes":"Now classic fantasy with somewhat more mature themes"},
+            {"bookID":103,"title":"Dune","authorLast":"Herbert","authorFirst":"Frank","pages":541,"haveRead":"false","dateRead":"0000/00/00", "isbn13": 9780441013593, "notes":"Classic sci-fi, political intrigue, deep, conceptual"},
+            {"bookID":103,"title":"Leviathan Wakes","authorLast":"Corey","authorFirst":"James S.A.","pages":288,"haveRead":"false","dateRead":"0000/00/00", "isbn13": 9781611297560, "notes":"Expanse series book 1. Action sci-fi with political backdrop. Amazon TV series ongoing"}
+          ]`
 
 // TODO update user library data structure to resemble map (or object) -> (k, v)=(authorName, authorBookArray)
 
@@ -59,17 +69,19 @@ let bookLibrary; // = JSON.parse(localStorage.getItem('userLibrary'));
 let totalBooks; 
 if (libInit) {
   bookLibrary = JSON.parse(libInit);
-  library = JSON.parse(libInit);
 }
+
+//userLibrary = new library(null);
+//console.log(bookLibrary);
+//bookLibrary.forEach(book => {
+//  console.log(book.bookID, book.title, book.authorLast, book.authorFirst, book.pages, book.haveRead, book.dateRead, book.isbn13)
+//  userLibrary.addBookToLibrary(book.bookID, book.title, book.authorLast, book.authorFirst, book.pages, book.haveRead, book.dateRead, book.isbn13)
+//});
 
 // init localStorage 'userLibrary' if it does not exist
 if (localStorage.getItem('userLibrary') === null) {
   localStorage.setItem('userLibrary', JSON.stringify(bookLibrary));
 }
-
-console.log(typeof bookLibrary);
-
-
 
 function toggleModal(elementID) {
   let toggleElement = document.getElementById(elementID);
@@ -86,18 +98,17 @@ function setEventListeners() {
     e.preventDefault(); 
     addBook('add-book-modal');
    }); 
-  
 }
 
 // for table creation 
-let tableTest;
-let tableDiv;
+// let tableTest;
+// let tableDiv;
 let _table = document.createElement('table');
-let _tr = document.createElement('tr');
-let _th = document.createElement('th');
-let _td = document.createElement('td');
-const checkbox = document.createElement('input');
-checkbox.type = 'checkbox';
+// let _tr = document.createElement('tr');
+// let _th = document.createElement('th');
+// let _td = document.createElement('td');
+// const checkbox = document.createElement('input');
+// checkbox.type = 'checkbox';
 
 // setup table for formatting
 _table.setAttribute('id', 'libraryTable');
@@ -149,7 +160,6 @@ function addAllColumnHeaders(arr, table) {
   return columnSet;
 }
 */
-
 // END code from Stack overflow
 
 function addBookDiv(book) {
@@ -157,12 +167,16 @@ function addBookDiv(book) {
   let newDiv = document.createElement('div'); 
   let btnEdit = document.createElement('button');
   let btnDel = document.createElement('button');
+  btnEdit.innerText = 'Edit';
+  btnEdit.setAttribute('class', 'btn btn-outline-warning');
   btnDel.innerText = 'Delete';
   btnDel.setAttribute('class', 'btn btn-outline-danger');
-  newDiv.setAttribute('id', bookLibrary[book]['bookID']);
+  newDiv.setAttribute('id', book['bookID']);
   newDiv.setAttribute('class', 'card-div');
 
-  if (bookLibrary[book]['haveRead'] == 'true') {
+  /* REMOVED haveRead logic - User feedback indicates this is not a desired or useful behavior
+  // TODO haveRead button to EDIT BOOK
+  if (book['haveRead'] == 'true') {
     btnEdit.innerText = 'Read';
     btnEdit.setAttribute('class', 'btn btn-outline-success');
     btnEdit.setAttribute('data-text-original', 'Read');
@@ -183,31 +197,35 @@ function addBookDiv(book) {
       btnEdit.innerHTML = btnEdit.getAttribute('data-text-swap');
     }
     // toggle Have Read in bookLibrary[]
-    if (bookLibrary[book]['Have Read'] == 'true') {
-      bookLibrary[book]['Have Read'] = 'false';
+    if (book['haveRead'] == 'true') {
+      book['haveRead'] = 'false';
       btnEdit.classList.remove('btn-outline-success');
       btnEdit.classList.add('btn-outline-secondary');
     } 
     else {
-      bookLibrary[book]['Have Read'] == 'false';
-      bookLibrary[book]['Have Read'] = 'true';
+      book['haveRead'] == 'false';
+      book['haveRead'] = 'true';
       btnEdit.classList.remove('btn-outline-secondary');
       btnEdit.classList.add('btn-outline-success');
     }
   }, false);
+    */
   // grab a cover graphic from https://openlibrary.org/dev/docs/api/covers using ISBN 13 and S, M, L image size
-  const coverURL = `http://covers.openlibrary.org/b/ISBN/${bookLibrary[book]['isbn13']}-S.jpg`
+  const coverURL = `http://covers.openlibrary.org/b/ISBN/${book['isbn13']}-M.jpg`
   newDiv.innerHTML = `<p> <img src=${coverURL} </p>` +
                     //'<p>Book ID: ' + bookLibrary[i]['Book ID'] + '</p>' +
-                    '<p>' + bookLibrary[book]['title'] + '<br> by ' +
-                    bookLibrary[book]['authorLast'] + ', ' + bookLibrary[book]['authorFirst'] + '</p>' +
-                    bookLibrary[book]['pages'] + ' Pages</p>' +
-                    '<p>ISBN 13: ' + bookLibrary[book]['isbn13'] + '</p>' +
-                    '<p>Date Read: ' + bookLibrary[book]['dateRead'] + '</p>';
+                    '<p>' + book['title'] + ', ' + book['pages'] + ' Pages' +
+                    '<br> by ' +
+                    book['authorLast'] + ', ' + book['authorFirst'] + '</p>' +
+                    
+                    // '<p>ISBN 13: ' + book['isbn13'] + '</p>' +
+                    '<p>Date Read: ' + book['dateRead'] + '</p>' +
+                    '<p>Notes: ' + book['notes'];
+
   // btnRead.setAttribute('data-bookID', bookLibrary[i]['Book ID']); // for later editing
   // btnDel.setAttribute('data-bookID', bookLibrary[i]['Book ID']);
   // add event listener for Delete
-  btnDel.setAttribute('onclick', `removeBook(bookLibrary[${book}])`);
+  btnDel.setAttribute('onclick', `removeBook(${bookLibrary.indexOf(book)})`);
   // append the buttons for Read/Not Read status and Delete
   newDiv.appendChild(btnEdit);
   newDiv.appendChild(btnDel);
@@ -228,19 +246,21 @@ function addBook(toggleElementID) {
   bookToAdd['authorLast'] = document.getElementById('bAuthorLast').value;
   bookToAdd['authorFirst'] = document.getElementById('bAuthorFirst').value;
   bookToAdd['pages'] = document.getElementById('bPages').value;
-  bookToAdd['haveRead'] = (document.querySelector('.form-check-input').checked).toString();
+  // bookToAdd['haveRead'] = (document.querySelector('.form-check-input').checked).toString();
   bookToAdd['dateRead'] = document.getElementById('bDateRead').value;
   bookToAdd['isbn13'] = document.getElementById('bISBN').value;
-  console.log(bookToAdd);
+  bookToAdd['notes'] = document.getElementById('book-notes').value;
+  //console.log(bookToAdd);
   bookLibrary.push(bookToAdd);
   localStorage.setItem('userLibrary', JSON.stringify(bookLibrary));
-  addBookDiv(totalBooks);
+  addBookDiv(bookToAdd);
   toggleModal(toggleElementID);
 }
 
 function removeBook(removeID) {
+  
   console.log(removeID);
-  bookLibrary.splice(bookLibrary.indexOf(removeID), 1);
+  bookLibrary.splice(removeID, 1);
   bookLibrary = bookLibrary.filter(function (e) {
     return e != null;
   });
@@ -251,20 +271,28 @@ function removeBook(removeID) {
 function searchBooks() {
   // a function to accept a search term and the type of search, then return an array of matches
   // TO DO
-  alert('Not Yet Implemented.');
-  // listBooks();
+  // alert('Not Yet Implemented.');
+  let searchTerm = document.getElementById('search-term').value;
+  console.log(searchTerm);
+  let listArray = bookLibrary.filter( obj => (obj.authorLast.toString() === searchTerm.toString()));
+  console.log(listArray);
+  listBooks(listArray);
+  alert('Click OK');
 }
 
-function listBooks(authorName, authorBookArray) {  
-  // TODO update user library data structure to resemble map (or object) -> (k, v)=(authorName, authorBookArray)
+function listBooks(bookArray) {  
+  console.log(bookArray);
+  // use the parameter array or bookLibrary (all books) if none/null
+  if (bookArray) listBooksArray = bookArray; 
+  else listBooksArray = bookLibrary;
+  // clear libraryTable element
   if (document.getElementById('libraryTable').firstChild) {
     while (document.getElementById('libraryTable').firstChild) {
       document.getElementById('libraryTable').removeChild(document.getElementById('libraryTable').firstChild);
     }
   }
-  for (let i = 0; i < bookLibrary.length; i++) {
-    addBookDiv(i);
-  }
+  // repopulate book list
+  if (listBooksArray) listBooksArray.forEach(i => addBookDiv(i));
 
   /* TABLE code below - replaced with card div view
   if (document.getElementById('libraryTable')) {
