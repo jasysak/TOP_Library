@@ -27,6 +27,11 @@ class book {
   }
 }
 
+// ORIGIN
+// kindle KU
+// pasco lib - HB or OV
+// hoopla ebook
+
 /*
 class library {
   [authorLast] 
@@ -59,8 +64,9 @@ libInit = `[{"bookID":100,"title":"The Hobbit","authorLast":"Tolkien","authorFir
             {"bookID":101,"title":"A Game of Thrones","authorLast":"Martin","authorFirst":"George R.R.","pages":694,"haveRead":"true","dateRead":"2016/10/01", "isbn13": 9780553573404, "notes":"Now classic fantasy with more adult themes"},
             {"bookID":102,"title":"On Basilisk Station","authorLast":"Weber","authorFirst":"David","pages":338,"haveRead":"true","dateRead":"2017/10/01", "isbn13": 9780671577933, "notes":"Action packed sci-fi, first in the Honorverse series."},
             {"bookID":103,"title":"The Last Wish","authorLast":"Sapkowski","authorFirst":"Andrzej","pages":288,"haveRead":"false","dateRead":"0000/00/00", "isbn13": 9780316438964, "notes":"Now classic fantasy with somewhat more mature themes"},
-            {"bookID":103,"title":"Dune","authorLast":"Herbert","authorFirst":"Frank","pages":541,"haveRead":"false","dateRead":"0000/00/00", "isbn13": 9780441013593, "notes":"Classic sci-fi, political intrigue, deep, conceptual"},
-            {"bookID":103,"title":"Leviathan Wakes","authorLast":"Corey","authorFirst":"James S.A.","pages":288,"haveRead":"false","dateRead":"0000/00/00", "isbn13": 9781611297560, "notes":"Expanse series book 1. Action sci-fi with political backdrop. Amazon TV series ongoing"}
+            {"bookID":104,"title":"Dune","authorLast":"Herbert","authorFirst":"Frank","pages":541,"haveRead":"false","dateRead":"0000/00/00", "isbn13": 9780441013593, "notes":"Classic sci-fi, political intrigue, deep, conceptual"},
+            {"bookID":105,"title":"Leviathan Wakes","authorLast":"Corey","authorFirst":"James S.A.","pages":288,"haveRead":"false","dateRead":"0000/00/00", "isbn13": 9781611297560, "notes":"Expanse series book 1. Action sci-fi with political backdrop. Amazon TV series ongoing"},
+            {"bookID":106,"title":"The Honor of the Queen","authorLast":"Weber","authorFirst":"David","pages":338,"haveRead":"true","dateRead":"2017/10/01", "isbn13": 9780743408233, "notes":"Action packed sci-fi, second in the Honorverse series."}
           ]`
 
 // TODO update user library data structure to resemble map (or object) -> (k, v)=(authorName, authorBookArray)
@@ -224,12 +230,9 @@ function addBookDiv(book) {
 
   // btnRead.setAttribute('data-bookID', bookLibrary[i]['Book ID']); // for later editing
   // btnDel.setAttribute('data-bookID', bookLibrary[i]['Book ID']);
-  // add event listener for Delete
   btnDel.setAttribute('onclick', `removeBook(${bookLibrary.indexOf(book)})`);
-  // append the buttons for Read/Not Read status and Delete
   newDiv.appendChild(btnEdit);
   newDiv.appendChild(btnDel);
-  // append the new book div for display
   tableDiv.appendChild(newDiv);
 }
 
@@ -237,7 +240,7 @@ function addBook(toggleElementID) {
   if ((!document.getElementById('bTitle').value) || (!document.getElementById('bAuthorLast').value)) {
     alert('Book Title and Author are required!');
     return;
-  // TODO clean up this validation, add working HTML5 form validation 
+  // TODO clean up this validation, consider adding a working HTML5 form validation 
   }
   let bookToAdd = new book;
   totalBooks = bookLibrary.length;
@@ -258,8 +261,6 @@ function addBook(toggleElementID) {
 }
 
 function removeBook(removeID) {
-  
-  console.log(removeID);
   bookLibrary.splice(removeID, 1);
   bookLibrary = bookLibrary.filter(function (e) {
     return e != null;
@@ -272,17 +273,16 @@ function searchBooks() {
   // a function to accept a search term and the type of search, then return an array of matches
   // TO DO
   // alert('Not Yet Implemented.');
+  let listArray;
   let searchTerm = document.getElementById('search-term').value;
   console.log(searchTerm);
-  let listArray = bookLibrary.filter( obj => (obj.authorLast.toString() === searchTerm.toString()));
-  console.log(listArray);
+  if (searchTerm) listArray = bookLibrary.filter( obj => (obj.authorLast.toString() === searchTerm.toString()));
+  else listArray = null;
   listBooks(listArray);
-  alert('Click OK');
 }
 
 function listBooks(bookArray) {  
-  console.log(bookArray);
-  // use the parameter array or bookLibrary (all books) if none/null
+  // use the passed array or bookLibrary (all books) if none/null
   if (bookArray) listBooksArray = bookArray; 
   else listBooksArray = bookLibrary;
   // clear libraryTable element
